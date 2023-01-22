@@ -1,0 +1,16 @@
+import pandas as pd
+df=pd.read_csv("https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz", nrows=100)
+from sqlalchemy import create_engine
+engine= create_engine('postgresql+psycopg2://root:root@localhost:8087/ny_taxi') 
+engine.connect()
+
+df.tpep_pickup_datetime=pd.to_datetime(df.tpep_pickup_datetime)
+df.tpep_dropoff_datetime=pd.to_datetime(df.tpep_dropoff_datetime)
+print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine))
+
+print(engine.connect())
+
+df_iter=pd.read_csv("https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz", iterator=True, chunksize=100000)
+df2=next(df_iter)
+df2.tpep_pickup_datetime=pd.to_datetime(df2.tpep_pickup_datetime)
+df2.tpep_dropoff_datetime=pd.to_datetime(df2.tpep_dropoff_datetime)
