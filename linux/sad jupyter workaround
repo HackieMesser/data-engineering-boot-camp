@@ -1,0 +1,24 @@
+import pandas as pd
+
+
+from sqlalchemy import create_engine
+
+
+engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
+
+engine.connect()
+
+query = """
+SELECT *
+FROM pg_catalog.pg_tables
+WHERE schemaname != 'pg_catalog' AND 
+    schemaname != 'information_schema';
+"""
+pd.read_sql(query, con=engine)
+
+df = pd.read_csv('/home/coach/repos/dockerlinux/yellow_tripdata_2021-01.csv', nrows=100)
+
+df.to_sql(name='yellow_tripdata_trip',con=engine, index=False)
+
+query = """select * from yellow_tripdata_trip limit 10"""
+pd.read_sql(query, con=engine)
