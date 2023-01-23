@@ -1,0 +1,31 @@
+df_iter = pd.read_csv('/home/coach/repos/dockerlinux/yellow_tripdata_2021-01.csv', iterator=True,chunksize=100000)
+
+df_iter
+
+df =next(df_iter)
+
+df.tpep_pickup_datetime=pd.to_datetime(df.tpep_pickup_datetime)
+df.tpep_dropoff_datetime=pd.to_datetime(df.tpep_dropoff_datetime)
+
+df.head(n=0).to_sql(name='yellow_taxi_data',con=engine, if_exists='replace')
+
+%time df.to_sql(name='yellow_taxi_data',con=engine, if_exists='append')
+
+query = """select count(*) from yellow_taxi_data"""
+pd.read_sql(query, con=engine)
+
+import time
+
+
+
+while True:
+    t_start = time.time()
+    df=next(df_iter)
+    df.tpep_pickup_datetime=pd.to_datetime(df.tpep_pickup_datetime)
+    df.tpep_dropoff_datetime=pd.to_datetime(df.tpep_dropoff_datetime)
+    df.to_sql(name='yellow_taxi_data',con=engine, if_exists='append')
+    t_end =time.time()
+    print('inserted chunk, took %3f seconds' %(t_end - t_start))
+
+query = """select count(*) from yellow_taxi_data"""
+pd.read_sql(query, con=engine)
