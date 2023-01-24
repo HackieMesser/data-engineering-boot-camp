@@ -1,3 +1,5 @@
+#how to link to postgres
+
 sudo docker run -it \
 -e POSTGRES_USER="root" \
 -e POSTGRES_PASSWORD="root" \
@@ -6,7 +8,7 @@ sudo docker run -it \
 -p 5432:5432 \
 postgres:13
 
-
+#link to pgadmin
 sudo docker run -it \
     -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
     -e PGADMIN_DEFAULT_PASSWORD="root" \
