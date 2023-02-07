@@ -17,9 +17,23 @@ def transform(path:Path)-> pd.DataFrame:
     """return pandas dataframe"""
     df =pd.read_parquet(path)
     print(f"pre:missing passenger count: {df['passenger_count'].isna().sum()}")
-    df['passenger_count'].fillna(0)
+    df['passenger_count'].fillna(0, inplace=True)
     print(f"post:missing passenger count: {df['passenger_count'].isna().sum()}")
     return df
+@task()
+def write_bq(df: pd.DataFrame)-> None:
+    """write df to biqgquerey"""
+
+    gcp_credentials_block = GcpCredentials.load("prefect-gcp-creds")
+
+    df.to_gbq(
+        destination_table="GCP_prefect.rides",
+        project_id="silicon-airlock-376018",
+        credentials= gcp_credentials_block.get_credentials_from_service_account(),
+        chunksize=500_000,
+        if_exists="append"
+    )
+
 @flow()
 def etl_gcs_to_bq():
     """main etl flow to load data into big query"""
@@ -29,5 +43,8 @@ def etl_gcs_to_bq():
 
     path = extract_from_gcs(color,year,month)
     df =transform(path)
+    write_bq(df)
+
+
 if __name__ == "__main__":
     etl_gcs_to_bq()
