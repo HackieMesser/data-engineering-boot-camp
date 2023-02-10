@@ -1,1 +1,11 @@
+from prefect.infastructure.docker import DockerContainer
+
+docker_block = DockerContainer(
+    image= hackiemesser/prefect:deng,
+    image_pull_policy="Always",
+    auto_removal=True,
+)
+
+docker_block.save("zoom, overwrite=True")
+
 
