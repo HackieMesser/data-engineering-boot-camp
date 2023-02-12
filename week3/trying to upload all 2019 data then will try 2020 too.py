@@ -1,5 +1,6 @@
 #need to do uris = ['gs://nyc-tl-data/trip data/yellow_tripdata_2019-*.csv', 'gs://nyc-tl-data/trip data/yellow_tripdata_2020-*.csv']
 #not yet working
+#paramitized flow is helping
 
 
 from pathlib import Path
