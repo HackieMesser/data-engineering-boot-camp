@@ -17,3 +17,5 @@ select table_name, partition_id, total_rows
 from `silicon-airlock-376018.trips_data_all.INFORMATION_SCHEMA.PARTITIONS`
 where table_name = 'yellowtrips_partitioned'
 order by total_rows desc;
+
+create or replace table `silicon-airlock-376018.trips_data_all.yellowtrips_partitioned_clustered` partition by date(tpep_pickup_datetime) cluster by VendorID as select * from `trips_data_all.yellowtrips`
