@@ -12,3 +12,8 @@ OPTIONS (
 
 select distinct(VendorID) from `silicon-airlock-376018.trips_data_all.yellowtrips` where date(tpep_pickup_datetime) between '2019-06-01' and '2019-06-30';
 select distinct(VendorID) from `silicon-airlock-376018.trips_data_all.yellowtrips_partitioned` where date(tpep_pickup_datetime) between '2019-06-01' and '2019-06-30';
+
+select table_name, partition_id, total_rows
+from `silicon-airlock-376018.trips_data_all.INFORMATION_SCHEMA.PARTITIONS`
+where table_name = 'yellowtrips_partitioned'
+order by total_rows desc;
