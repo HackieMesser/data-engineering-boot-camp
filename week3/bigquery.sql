@@ -19,3 +19,6 @@ where table_name = 'yellowtrips_partitioned'
 order by total_rows desc;
 
 create or replace table `silicon-airlock-376018.trips_data_all.yellowtrips_partitioned_clustered` partition by date(tpep_pickup_datetime) cluster by VendorID as select * from `trips_data_all.yellowtrips`
+
+select count(1) as rides from `silicon-airlock-376018.trips_data_all.yellowtrips_partitioned_clustered` where date(tpep_pickup_datetime) between '2019-06-01' and '2019-06-30'
+select count(1) as rides from `silicon-airlock-376018.trips_data_all.yellowtrips_partitioned` where date(tpep_pickup_datetime) between '2019-06-01' and '2019-06-30'
