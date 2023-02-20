@@ -9,3 +9,6 @@ OPTIONS (
   format = 'CSV',
   uris = ['gs://nyc-tl-data/trip data/yellow_tripdata_2019-*.csv', 'gs://nyc-tl-data/trip data/yellow_tripdata_2020-*.csv']
 );
+
+select distinct(VendorID) from `silicon-airlock-376018.trips_data_all.yellowtrips` where date(tpep_pickup_datetime) between '2019-06-01' and '2019-06-30';
+select distinct(VendorID) from `silicon-airlock-376018.trips_data_all.yellowtrips_partitioned` where date(tpep_pickup_datetime) between '2019-06-01' and '2019-06-30';
